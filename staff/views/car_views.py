@@ -1,7 +1,7 @@
-from django.contrib.auth.models import User
-
+from rest_framework.decorators import api_view, authentication_classes, parser_classes
 from rest_framework import viewsets, status
 from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser
 
 from gate_mangment_system.authonticaton.api_authontication import APIAuthentication
 from gate_mangment_system.pagination.standred_pagination import StandardResultsSetPagination
@@ -21,11 +21,20 @@ class CarViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         query_param = self.request.GET
         return self.queryset
+    
+    def retrieve(self, request, pk=None):
+        try:
+            car = Car.objects.get(id=pk)
+        except:
+            return Response(data={"message": " This Car is not exsits"}, status=status.HTTP_400_BAD_REQUEST)
 
+        return Response(data=CarSerializer(car).data,
+                        status=status.HTTP_200_OK)
+    
     def create(self, request):
         if not self.request.user.has_perm('staff.can_add_car'):
             return Response(data={"message": "Permission Denied"}, 
-                            status=status.HTTP_403_FORBIDDEN)
+                        status=status.HTTP_403_FORBIDDEN)
         data = self.request.data
         serializer = CarSerializer(data=data)
         if not serializer.is_valid():

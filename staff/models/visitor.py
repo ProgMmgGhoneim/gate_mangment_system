@@ -3,7 +3,9 @@ from django.utils.translation import gettext_lazy as _
 
 from gate.base_model import BaseModel
 
-# Create your models here.
+def upload_to(instance, filename):
+    return 'visitor/{}'.format(filename)
+
 class Visitor(BaseModel):
     VISITOR_STATUS = [
         (1, _("Pending")),
@@ -16,7 +18,7 @@ class Visitor(BaseModel):
     national_id = models.CharField(_("National ID"), max_length=256, blank=False, null=False)
     job_title = models.CharField(_("Job Title"), max_length=256, blank=True, null=True)
     reason_of_visit = models.CharField(_("Reason Of Visit"), max_length=256, blank=True, null=True)
-    visitor_img = models.ImageField(null=True, blank=True, upload_to ='visitor/% Y/% m/% d/')
+    image = models.ImageField(null=True, blank=True, upload_to =upload_to)
     
     class Meta:
         verbose_name = "Visitor"

@@ -11,13 +11,15 @@ class APIAuthentication(authentication.BaseAuthentication):
     
     def authenticate(self, request):
         get_token = self.get_from_header(request)
+        type, token = get_token.split(' ')
+        
         if not get_token:
             raise exceptions.AuthenticationFailed('Authontication Failed')
         try:
-            staff = Staff.from_auth_token(get_token)
+            staff = Staff.from_auth_token(token, type)
         except User.DoesNotExist:
             raise exceptions.AuthenticationFailed('No such user')
-        return (staff.user, get_token)
+        return (staff.user, token)
     
     def authenticate_header(self, request):
         return 'Bearer'
