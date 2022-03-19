@@ -24,11 +24,25 @@ class Staff(BaseModel):
     is_admin = models.BooleanField(_("Admin"), default=False)
     is_operation = models.BooleanField(_("Operation"), default=False)
     is_supervisor = models.BooleanField(_("Supervisor"), default=False)
-    tabs = models.JSONField(_("tabs"), null=True, blank=True)
+    _tabs = models.JSONField(_("tabs"), null=True, blank=True)
 
     class Meta:
         verbose_name = "saff"
         ordering = ['-created_at']
+    
+    @property
+    def tabs(self):
+        return self._tabs
+    
+    @tabs.setter
+    def tabs(self, a):
+        if self.is_admin:
+            self._tabs ={'__ALL__'}
+        elif self.is_operation:
+            self._tabs = {
+            }
+        elif self.is_supervisor:
+            self._tabs = {}
 
     def __str__(self):
         return self.user.username

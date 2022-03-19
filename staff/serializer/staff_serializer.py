@@ -43,8 +43,7 @@ class StaffSerializer(serializers.Serializer):
 
     def update(self, staff, validated_data):
         user = staff.user
-        user.username = validated_data.get('username')
-        user.password = validated_data.get('password')
+        user.set_password(validated_data.get('username'))
         user.save()
         
         staff.gate.add(*validated_data.get('gate_ids'))
