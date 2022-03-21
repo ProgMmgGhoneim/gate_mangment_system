@@ -1,2 +1,0 @@
-from .camera_serializer import CameraSerializer
-from .gate_serializer import GateSerializer
