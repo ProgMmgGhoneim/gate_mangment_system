@@ -1,0 +1,6 @@
+*.pyc
+*.sqlite3
+gate/migrations
+staff/migrations
+media
+static

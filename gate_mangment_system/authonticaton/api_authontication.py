@@ -11,6 +11,8 @@ class APIAuthentication(authentication.BaseAuthentication):
     
     def authenticate(self, request):
         get_token = self.get_from_header(request)
+        if not get_token:
+            raise exceptions.AuthenticationFailed('Authontication Failed!')
         type, token = get_token.split(' ')
         
         if not get_token:
