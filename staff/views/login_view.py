@@ -1,6 +1,7 @@
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 
 from django.contrib.auth.models import User
 
@@ -10,7 +11,8 @@ from staff.models.staff import Staff
 from gate.serializer.gate_serializer import GateSerializer
 
 class LoginView(APIView):
-  
+    authentication_classes = [SessionAuthentication, ]
+
     def post(self, request, format=None):
         """
             Login View
