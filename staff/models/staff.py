@@ -1,5 +1,4 @@
 import jwt
-import base64
 from datetime import datetime
 
 from django.db import models

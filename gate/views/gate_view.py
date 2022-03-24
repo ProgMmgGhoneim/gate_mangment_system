@@ -85,5 +85,6 @@ class GateViewSet(viewsets.ModelViewSet):
         if not staff:
             return Response(data={"message": "This User have no gate"},
                             status=status.HTTP_400_BAD_REQUEST)
+        self.get_serializer_context()
         # return Also Camera
         return Response(GateSerializer(staff.gate, many=True).data, status=status.HTTP_200_OK)
